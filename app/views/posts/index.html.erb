@@ -1,0 +1,42 @@
+      <div class="container">
+         <div class="container bgbox2">
+            <div class="col-md-9 ">
+               <h1>Posts</h1>
+            </div>
+         </div>
+      </div>
+      <br/>
+
+      <% @posts.each do |post| %>
+      <a href=""><img src="/images/Generic-profile-image.png" class="img" alt="Cinque Terre" width="60" hight="60"></a><a href="">User Name</a>
+      <div class="container">
+         <div class="col-md-12">
+            <div class="well well-sm ">
+               <%= post.title %>
+               <br/>
+            </div>
+            <div class="well well-sm ">
+               <a <%= link_to 'Show', post %>
+               </a>&nbsp;&nbsp;&nbsp;&nbsp;
+               <a <%= link_to 'Edit', edit_post_path(post) %>
+               </a>&nbsp;&nbsp;&nbsp;&nbsp;
+               <a <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+               </a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="">
+                some link
+              </a>&nbsp;&nbsp;&nbsp;&nbsp;
+              <a href="">
+              some link
+              </a>&nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <% end %>
+            </div>
+
+            
+         
+
+
+
+
+
+

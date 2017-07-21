@@ -1,0 +1,43 @@
+<h1>Posts</h1>
+ <%= form_for :post, url: posts_path do |f| %>
+
+    <p>
+        <%= f.label :title %><br>
+        <%= f.text_field :title %>   
+      </p>
+ 
+     <p>
+        <%= f.label :descrption %><br>
+        <%= f.text_area :descrption %>
+    </p>
+ 
+
+
+
+   <select id="e1", name="xyz[]" class="js-example-basic-multiple">
+       <% @users.each do |user| %>
+        <%# byebug %>
+         <%#= form.collection_select :user_id, User.order(:name),:id,:name%>
+
+    <p>  
+        <option value= "<%=user.id%>"><%=user.name%></option>
+    </p>
+                
+    <% end %>
+   </select>
+
+
+   <p>
+     <%= f.submit %>
+    </p>
+  <% end %>
+  
+   
+
+   <script type="text/javascript">
+    
+    $( ".js-example-basic-multiple" ).select2({
+    theme: "bootstrap" ,multiple: true
+});
+
+</script>
