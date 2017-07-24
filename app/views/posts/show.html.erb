@@ -20,10 +20,40 @@
     <%=link_to user.email, tagging_path+ "?userId=#{user.id}&&postID=#{@post.id}" %>
   </p>
   <% end %>
-<% @users.each do |user| %>
-<p>
-    <strong>Tag:</strong>
-    <%=link_to user.email, tagging_path+ "?userId=#{user.id}&&postID=#{@post.id}" %>
-  </p>
-  <% end %>
- 
+
+ <% @post.endorsements.each do |endorsement| %>
+         <p>
+           <strong>Text:</strong>
+            <%= endorsement.text %>
+           </p>
+
+          <p>
+           <strong>User_id:</strong>
+            <%= endorsement.user.email %>
+          </p>
+
+
+
+        <% end %>
+            <%# byebug %>
+            <div class="endorse_form_<%=@post.id %>" style='display: none;'>
+           <%= form_for([@post, @post.endorsements.build]) do |f| %>
+         <p>
+           <%= f.label :text %><br>
+           <%= f.text_field :text %>
+         </p>
+  
+          <p>
+           <%= f.label :user_id %><br>
+           <%= f.text_field :user_id %>
+          </p>
+
+          <p>
+         <%= f.submit %>
+          </p>
+       <% end %>
+       </div>
+        
+      
+      </div>
+              

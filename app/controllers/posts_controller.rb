@@ -7,11 +7,17 @@ class PostsController < ApplicationController
  	def new
         @users = User.all
         @posts = Post.all
- 		@post = Post.new
- 
+ 		    @post = Post.new
+      
+       session[:conversations] ||= []
+
+    @users = User.all.where.not(id: current_user)
+    @conversations = Conversation.includes(:recipient, :messages).find(session[:conversations])
  	end
     
     def edit
+    @users = User.all  
+    @posts = Post.all  
     @post = Post.find(params[:id])
     end
     
@@ -22,15 +28,15 @@ class PostsController < ApplicationController
     end
 
  	def create
- 	@post = Post.new(post_params)
+ 	   @post = Post.new(post_params)
  		
      params[:xyz].each do |userid|
      @pst_id=Post.last.id
      Tagging.create(user_id: userid,post_id: @pst_id)
      @post.save
-       end
-        
-    	redirect_to @post
+     
+     end
+     redirect_to new_post_path
 	 end
  
 	def show
@@ -40,27 +46,29 @@ class PostsController < ApplicationController
 	end
 
 	def upvote
-		@post = Post.find(params[:id])
-		@post.upvote_from current_user
-	    @post.get_upvotes.size  
-        #@post.votes_for.up.by_type current_user
-	end
+    
+      @post = Post.find(params[:id])
+      @post.upvote_from current_user
+       respond_to do |format|
+      format.js { render :file => 'posts/post.js.erb'}
+      end
+    end
 
-	def downvote
-	    @post = Post.find(params[:id])
-        @post.downvote_from current_user
-        @post.get_downvotes.size  
-        #@post.votes_for.down.by_type current_user
-	end
-        
+  def downvote
+  
+      @post = Post.find(params[:id])
+      @post.downvote_from current_user
+       respond_to do |format|
+      format.js { render :file => 'posts/post.js.erb'}
+     end
+  end  
 
      def update
   	    @post = Post.find(params[:id])
- 
-   if @post.update(post_params)
-    redirect_to @post
-  else
-    render 'edit'
+     if @post.update(post_params)
+          redirect_to @post
+     else
+          render 'edit'
   end
 end
 

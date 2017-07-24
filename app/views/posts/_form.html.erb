@@ -1,91 +1,148 @@
 
-<h1>Posts</h1>
- <%= form_for :post, url: posts_path do |f| %>
+<div class ="container">
+  <div align ="right">
+     <h2> <%= link_to "Profile",  {:controller =>"users", :action =>"show", :id => current_user.id} %></h2>
+     </div>
+     </div>
 
-    <p>
+
+
+<%= form_for :post, url: posts_path do |f| %>
+
+    <p class="emoji-picker-container">
         <%= f.label :title %><br>
-        <%= f.text_field :title %>   
+        <%= f.text_field :title, data: { emojiable: true } %>   
       </p>
  
      <p>
         <%= f.label :descrption %><br>
         <%= f.text_area :descrption %>
     </p>
- 
-   <p>
+      
+     <p>
+        <%= f.label :tag %><br>
+    </p>
+
+      <select id="e1", name="xyz[]" class="js-example-basic-multiple">
+       <% @users.each do |user| %>
+        <%# byebug %>
+         <%#= form.collection_select :user_id, User.order(:name),:id,:name%>
+
+    <p>  
+
+        <option value= "<%=user.id%>"><%=user.email%></option>
+    </p>
+                
+    <% end %>
+   </select>
+
+    <p>
      <%= f.submit %>
     </p>
-  <% end %>
+   <% end %>
+  
+    <div class="container">
+         <div class="container bgbox2">
+            <div class="col-md-9 ">
+               <center><h1>Posts</h1></center>
+            </div>
+         </div>
+      </div>
+      <br/>
+
+      <% @posts.each do |post| %>
+      <a href=""><img src="/images/Generic-profile-image.png" class="img" alt="Cinque Terre" width="60" hight="60"></a><a href="">User Name</a>
+      <div class="container">
+         <div class="col-md-12">
+            <div class="well well-sm ">
+               <%= content_with_emoji(post.title) %>
+               <br/>
+            </div>
+            <div class="well well-sm ">
+                <%= link_to 'Show', post %>
+               &nbsp;&nbsp;&nbsp;&nbsp;
+                <%= link_to 'Edit', edit_post_path(post) %>
+               &nbsp;&nbsp;&nbsp;&nbsp;
+                <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+               &nbsp;&nbsp;&nbsp;&nbsp;
+                <button onclick="endorses_click('<%=post.id%>');">Endorse</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <button onclick="chat_click('<%=post.id%>');">Chat</button>
+               &nbsp;&nbsp;&nbsp;&nbsp;
+
+               <%= link_to  dislike_post_path(post), method: :put, remote: true do %>
+                  
+                <span class="post-down-<%= post.id %>" style='width: 50px'>Dislike
+                <%= post.get_downvotes.size  %><% end %>
+                </span>
+                <%= link_to  like_post_path(post), method: :put, remote: true do %>
+                <span class="post-up-<%= post.id %>" style='width: 50px'>Like
+                <%= post.get_upvotes.size  %><% end %>
+                </span>
+                </div>
+              </div>
+            </div>
+          <div class="chat_form_<%=post.id %>" style='display: none;'>
+             <%= render 'chat' %>
+             </div>
+
+          
+        <% post.endorsements.each do |endorsement| %>
+         <p>
+           <strong>Text:</strong>
+            <%= endorsement.text %>
+           </p>
+
+          <p>
+           <strong>User_id:</strong>
+            <%= endorsement.user.email %>
+          </p>
+
+
+
+        <% end %>
+            <%# byebug %>
+            <div class="endorse_form_<%=post.id %>" style='display: none;'>
+           <%= form_for([post, post.endorsements.build]) do |f| %>
+         <p>
+           <%= f.label :text %><br>
+           <%= f.text_field :text %>
+         </p>
+  
+          <p>
+           <%= f.label :user_id %><br>
+           <%= f.text_field :user_id %>
+          </p>
+
+          <p>
+         <%= f.submit %>
+          </p>
+       <% end %>
+       </div>
+        
+      <% end %>
+      </div>
+              
 
 
 
 
+           <script type="text/javascript">
+            $( ".js-example-basic-multiple" ).select2({
+            theme: "bootstrap" ,multiple: true
+            });
+
+            </script>
 
 
+            <script>
+             function endorses_click(argument) {
+             $(".endorse_form_"+ argument).toggle();
+             }
+            </script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- # <%= form_with(model: post, local: true) do |form| %>
-#   <% if post.errors.any? %>
-#     <div id="error_explanation">
-#       <h2><%= pluralize(post.errors.count, "error") %> prohibited this post from being saved:</h2>
-
-#       <ul>
-#       <% post.errors.full_messages.each do |message| %>
-#         <li><%= message %></li>
-#       <% end %>
-#       </ul>
-#     </div>
-#   <% end %>
-
-#   <div class="field">
-#     <%= form.label :title %>
-#     <%= form.text_field :title, id: :post_title %>
-#   </div>
-
-#   <div class="field">
-#     <%= form.label :descrption %>
-#     <%= form.text_field :descrption, id: :post_descrption %>
-#   </div>
-
-#   <h2>Posts</h2>
-# <% @current_user.posts.each do |post| %>
-#   <p>
-#     <strong>Title:</strong>
-#     <%= post.title %>
-#   </p>
- 
-#   <p>
-#     <strong>Descrption:</strong>
-#     <%= post.descrption %>
-#   </p>
-# <% end %>
-# <% end %> -->
+            <script>
+             function chat_click(argument) {
+             $(".chat_form_"+ argument).toggle();
+             }
+            </script>

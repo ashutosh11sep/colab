@@ -56,3 +56,5 @@ gem 'devise'
 gem 'acts_as_votable', '~> 0.10.0'
 gem "select2-rails"
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'jquery-rails'
+gem 'rails_emoji_picker'

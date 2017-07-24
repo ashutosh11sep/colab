@@ -1,0 +1,62 @@
+	
+ 	<div class ="container">
+	<div align ="right">
+      <h2> <%= link_to "Edit profile", edit_user_registration_path %></h2>
+     </div>
+     </div>
+
+	<p>
+  		<strong>Email:</strong>
+  		<%= @user.email %>
+	</p>
+    
+    <ul>
+    <% @users.each do |user| %>
+        <li>
+            <%= user.email %> |
+            <%= link_to "Add Friend", friendships_path(friend_id: user), method: :post %>
+        </li>
+    <% end %>
+</ul>
+
+ You have these a friend Requests</br>
+
+<ul>
+    <% current_user.requested_friendships.each do |request| %>
+    <li>
+      <%= request.email %>
+      <%= link_to "Accept",  friendship_path(id: request.id), method: "put" %>
+      <%= link_to "Decline", friendship_path(id: request.id), method: :delete %>
+    </li>
+  <% end %>
+</ul>
+
+
+
+
+
+
+  		<% @users.each do |user| %>
+ 	<p>
+    	<% if Follow.where(follower_id: current_user.id, following_id:user.id).first.present? %>
+		<%=link_to 'unfollow',  user_follows_path(user.id),  method: :post %>
+     	<%= user.email %>
+  		<% else %>
+    	<%=link_to 'Follow',  user_follows_path(user.id),  method: :post %>
+     	<%= user.email %>
+     		
+    </p>
+
+  	<% end %>
+
+ 	<% end %>
+	<br>
+		<%= link_to "Following", {controller: "follows", action: "following"} %>
+		<%= link_to "Follower", {controller: "follows", action: "follower"} %> 
+
+
+
+
+
+
+
