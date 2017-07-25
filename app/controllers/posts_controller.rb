@@ -31,7 +31,7 @@ class PostsController < ApplicationController
  	   @post = Post.new(post_params)
  		
      params[:xyz].each do |userid|
-     @pst_id=Post.last.id
+     @pst_id=@post.id
      Tagging.create(user_id: userid,post_id: @pst_id)
      @post.save
      
