@@ -6,6 +6,8 @@ before_action :set_user, only: [:show, :edit, :update, :destroy, :finish_signup]
 
   # GET /users/:id.:format
   def show
+  @users = User.all
+
     # authorize! :read, @user
   end
 
