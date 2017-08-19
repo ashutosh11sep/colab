@@ -61,6 +61,9 @@ class User < ApplicationRecord
  	has_many :posts
  	has_many :endorsements
 
+  has_many :posts
+  has_many :payements
+
 	has_many :taggings
 	has_many :posts, through: :taggings
 

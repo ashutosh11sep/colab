@@ -10,7 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170725062032) do
+ActiveRecord::Schema.define(version: 20170818152804) do
+
+  create_table "charges", force: :cascade do |t|
+    t.string "email"
+    t.integer "card"
+    t.integer "exp"
+    t.integer "cvc"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "conversations", force: :cascade do |t|
     t.integer "recipient_id"
@@ -65,9 +74,31 @@ ActiveRecord::Schema.define(version: 20170725062032) do
     t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
+  create_table "payements", force: :cascade do |t|
+    t.string "email"
+    t.integer "card"
+    t.integer "exp"
+    t.integer "cvv"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "post_id"
+    t.integer "user_id"
+  end
+
   create_table "posts", force: :cascade do |t|
     t.string "title"
     t.string "descrption"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "stripe_transactions", force: :cascade do |t|
+    t.integer "post_id"
+    t.integer "user_id"
+    t.string "stripe_customer_id"
+    t.string "stripe_transaction_id"
+    t.float "amount"
+    t.string "type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

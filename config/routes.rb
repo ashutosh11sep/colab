@@ -32,6 +32,9 @@ resources :posts do
     resources :endorsements
 end
 
+resources :posts do
+    resources :payements
+end
 
   resources :conversations, only: [:create] do
     member do
@@ -55,5 +58,6 @@ resources :users do
 end
 resources :friendships, only: [:create, :update, :destroy]
 
+resources :charges
 
 end

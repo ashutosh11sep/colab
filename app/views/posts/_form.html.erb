@@ -1,4 +1,3 @@
-
 <div class ="container">
   <div align ="right">
      <h2> <%= link_to "Profile",  {:controller =>"users", :action =>"show", :id => current_user.id} %></h2>
@@ -67,6 +66,8 @@
                &nbsp;&nbsp;&nbsp;&nbsp;
                 <button onclick="endorses_click('<%=post.id%>');">Endorse</button>
                 &nbsp;&nbsp;&nbsp;&nbsp;
+                <button onclick="payements_click('<%=post.id%>');">Payement</button>
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <button onclick="chat_click('<%=post.id%>');">Chat</button>
                &nbsp;&nbsp;&nbsp;&nbsp;
 
@@ -119,6 +120,79 @@
           </p>
        <% end %>
        </div>
+
+
+
+       <% post.payements.each do |payement| %>
+         <p>
+           <strong>Email:</strong>
+            <%= payement.email %>
+           </p>
+
+          <p>
+           <strong>Card:</strong>
+            <%= payement.card %>
+          </p>
+
+          <p>
+           <strong>Exp:</strong>
+            <%= payement.exp %>
+          </p>
+
+          <p>
+           <strong>cvv:</strong>
+            <%= payement.cvv %>
+          </p>
+
+        <% end %>
+            <%# byebug %>
+            <div class="payement_form_<%=post.id %>" style='display: none;'>
+           <%= form_for([post, post.payements.build]) do |f| %>
+         <p>
+           <%= f.label :email %><br>
+           <%= f.text_field :email %>
+         </p>
+  
+          <p>
+           <%= f.label :card %><br>
+           <%= f.text_field :card %>
+          </p>
+
+          <p>
+           <%= f.label :exp %><br>
+           <%= f.text_field :exp %>
+          </p>
+
+          <p>
+           <%= f.label :cvv %><br>
+           <%= f.text_field :cvv %>
+          </p>
+
+          <p>
+         <%= f.submit %>
+          </p>
+       
+       <% end %>
+       </div>
+
+       <%= form_tag charges_path do %>
+  <article>
+    <% if flash[:error].present? %>
+      <div id="error_explanation">
+        <p><%= flash[:error] %></p>
+      </div>
+    <% end %>
+    <label class="amount">
+      <span>Amount: $5.00</span>
+    </label>
+  </article>
+
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+          data-key="<%= Rails.configuration.stripe[:publishable_key] %>"
+          data-description="A month's subscription"
+          data-amount="500"
+          data-locale="auto"></script>
+<% end %>
         
       <% end %>
       </div>
@@ -142,7 +216,16 @@
             </script>
 
             <script>
+             function payements_click(argument) {
+             $(".payement_form_"+ argument).toggle();
+             }
+            </script>
+
+
+            <script>
              function chat_click(argument) {
              $(".chat_form_"+ argument).toggle();
              }
             </script>
+
+            

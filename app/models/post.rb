@@ -4,6 +4,8 @@ has_many :taggings
 has_many :users, through: :taggings
 
 has_many :endorsements
+has_many :payements
+
 
 
  acts_as_votable

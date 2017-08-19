@@ -1,5 +1,4 @@
 $('#conversations-list').find("[data-conversation-id='" + "<%= @conversation.id %>" + "']").parent().remove();
-
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
@@ -15,3 +14,7 @@ $('#conversations-list').find("[data-conversation-id='" + "<%= @conversation.id 
  
     if (panel.find('.panel-body').is(':visible')) {
       var height = messages_list[0].scrollHeight;
+      messages_list.scrollTop(height);
+    }
+  });
+})();
